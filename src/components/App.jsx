@@ -2,14 +2,33 @@ import css from './App.module.css';
 import Description from './Description/Description';
 import Options from './Options/Options';
 import Feedback from './Feedback/Feedback';
-
-const feedback = {
-  good: 0,
-  neutral: 0,
-  bad: 0,
-};
+import Notification from './Notification/Notification';
+import { useState } from 'react';
 
 const App = () => {
+  const [feedback, setFeedback] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  });
+
+  const resetFeedback = () => {
+    setFeedback({
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    });
+  };
+
+  const updateFeedback = feedbackType => {
+    setFeedback({
+      ...feedback,
+      [feedbackType]: feedback[feedbackType] + 1,
+    });
+  };
+
+  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
+
   return (
     <div className={css.container}>
       <Description>
@@ -19,16 +38,13 @@ const App = () => {
           options below.
         </p>
       </Description>
-      <Options>
-        <button className={css.btn}>Good</button>
-        <button className={css.btn}>Neutral</button>
-        <button className={css.btn}>Bad</button>
-      </Options>
-      <Feedback>
-        <p>Good: {feedback.good}</p>
-        <p>Neutral: {feedback.neutral}</p>
-        <p>Bad: {feedback.bad}</p>
-      </Feedback>
+      <Options
+        feedback={feedback}
+        updateFeedback={updateFeedback}
+        totalFeedback={totalFeedback}
+        resetFeedback={resetFeedback}
+      />
+      {totalFeedback > 0 ? <Feedback feedback={feedback} /> : <Notification />}
     </div>
   );
 };
