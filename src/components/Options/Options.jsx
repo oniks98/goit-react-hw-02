@@ -1,4 +1,4 @@
-// import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import css from './Options.module.css';
 
 function Options({ feedback, updateFeedback, totalFeedback, resetFeedback }) {
@@ -13,14 +13,25 @@ function Options({ feedback, updateFeedback, totalFeedback, resetFeedback }) {
           {feedbackType[0].toUpperCase() + feedbackType.slice(1)}
         </button>
       ))}
-      {totalFeedback > 0 ? (
+      {totalFeedback > 0 && (
         <button className={css.btn} onClick={resetFeedback}>
           Reset
         </button>
-      ) : null}
+      )}
     </div>
   );
 }
+
+Options.propTypes = {
+  feedback: PropTypes.shape({
+    good: PropTypes.number.isRequired,
+    neutral: PropTypes.number.isRequired,
+    bad: PropTypes.number.isRequired,
+  }).isRequired,
+  updateFeedback: PropTypes.func.isRequired,
+  totalFeedback: PropTypes.number.isRequired,
+  resetFeedback: PropTypes.func.isRequired,
+};
 
 export default Options;
 // 2-й варіант
