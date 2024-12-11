@@ -18,7 +18,7 @@ const App = () => {
         };
   });
 
-  console.log(feedback);
+  console.log(JSON.stringify(feedback));
 
   useEffect(() => {
     window.localStorage.setItem('saved-feedback', JSON.stringify(feedback));
@@ -33,10 +33,10 @@ const App = () => {
   };
 
   const updateFeedback = feedbackType => {
-    setFeedback({
-      ...feedback,
-      [feedbackType]: feedback[feedbackType] + 1,
-    });
+    setFeedback(prevFeedback => ({
+      ...prevFeedback,
+      [feedbackType]: prevFeedback[feedbackType] + 1,
+    }));
   };
 
   const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
